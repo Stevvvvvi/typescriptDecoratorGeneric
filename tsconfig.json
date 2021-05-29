@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "experimentalDecorators": true,
         "target": "esnext",
         "watch": true,
         "lib": ["dom","es2017"]

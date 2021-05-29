@@ -1,7 +1,7 @@
 function CarDecorator(constructor: Function ){
     constructor.prototype.date=new Date();
     constructor.prototype.giveMeDate=()=>{
-        // alert(this.date);
+        alert(constructor.prototype.date);
     }
 }
 // type props={
@@ -23,7 +23,19 @@ class Car{
 }
 let newCar=new Car('Honda');
 
-console.log((<any>newCar).date)
+console.log((<any>newCar as any).date)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

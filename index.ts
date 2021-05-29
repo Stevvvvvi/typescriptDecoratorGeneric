@@ -6,17 +6,27 @@ type abc = string[];
 let bb:abc = ['asdf','asdf','dfdfdf'];
 
 
-const carDecorator= (constructor:Function)=>{
-    console.log(constructor);
+
+// decorator learning
+
+function CarDecorator1(constructor: Function ){
+    constructor.prototype.date=new Date();
+    constructor.prototype.giveMeDate=()=>{
+        alert(this.date);
+    }
 }
 
-class Car {
-    private brand:string;
+@CarDecorator1
+class Car1{
+    private brand: string;
     public logo:string;
     constructor(brand:string){
         this.brand=brand;
-        this.logo='hello';
+        this.logo='this is a car logo'
     }
+    
 }
-let newCar=new Car('Honda');
-console.log(newCar.logo)
+let newCar1=new Car1('Honda');
+
+console.log((<any>newCar1 as any).date)
+
