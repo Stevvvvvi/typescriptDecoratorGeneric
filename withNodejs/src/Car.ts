@@ -1,8 +1,16 @@
-function CarDecorator(constructor: Function ){
+// decorator testing 
+function CarDecorator( constructor: Function ){
     constructor.prototype.date=new Date();
     constructor.prototype.giveMeDate=()=>{
-        alert(constructor.prototype.date);
+        console.log('running the givemedate function')
+        console.log(constructor.prototype.date);
     }
+    // return class extends constructor {
+    //     date=new Date();
+    //     // giveMeDate=()=>{
+    //     //     alert(this.date);
+    //     // }
+    // }
 }
 // type props={
 //     brand:string;
@@ -23,7 +31,9 @@ class Car{
 }
 let newCar=new Car('Honda');
 
-console.log((<any>newCar as any).date)
+console.log((newCar as any).date);
+(newCar as any).giveMeDate();
+
 
 
 
