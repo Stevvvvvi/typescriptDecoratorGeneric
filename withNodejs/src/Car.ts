@@ -40,6 +40,7 @@ function last<T>(a:T[]){
 
 console.log(last<number>([1,2,3,2,5,]))
 
+// use generic to have any properties
 type name={
     firstName:string,
     lastName:string,
@@ -60,4 +61,27 @@ const v4=makeFullName({firstName:'bob', lastName:'U',way:1111, age:11})
 
 console.log(v4.fullName);
 
+// interface of generic
+interface Tab<T>{
+    id:string;
+    position:number;
+    date:T;
+}
+type NumberTab=Tab<number>
 
+
+// react pass generic to children function 
+
+type FormProps<T>= {
+    value:T
+    childrenFunction:(value:T)=>void;
+}
+
+function Form <T>(props:FormProps<T>){
+    return props.childrenFunction(props.value);
+}
+function children<T>(value:T){
+    console.log('the value of this passed to props is '+value);
+}
+
+Form<number|boolean>({value: 123, childrenFunction: children})
