@@ -180,3 +180,87 @@ function children<T>(value:T){
 }
 
 Form<number|boolean>({value: 123, childrenFunction: children})
+
+
+
+//advanced typescript ////////////////////////////////////////////////////////////////////
+type Duck={
+    color:string;
+    feather:string;
+    age:number;
+}
+type ReadOnlyDuck=Readonly<{
+    color:string;
+    feather:string;
+    age:number;
+}>
+
+let newDuck:ReadOnlyDuck={color:'blue',feather:'light',age:2};
+
+newDuck={...newDuck, age:3};
+
+console.log(newDuck);
+
+///partial /////////////////
+type Starship = {
+    name: string;
+    enableHyperjump: boolean;
+  };
+  
+  const updateStarship = (id: number, starship: Partial<Starship>) => {};
+  
+  updateStarship(1, { name: "explorer" });
+
+  ///record<>/////////////////////////
+  const starships:Record<string,Starship>={
+      Explorer1:{
+          name:'Explorer1',
+          enableHyperjump:true,
+      },
+      Explorer2:{
+          name:'Explorer2',
+          enableHyperjump:false,
+      }
+  }
+  
+
+//InstanceType<T>////////////////////////////////
+
+type Constructable<ClassInstance>=new (...arg:any[])=>ClassInstance;
+
+function deletable<BaseClass extends Constructable<{}>>(Base:BaseClass){
+    return class extends Base {
+        deleted:boolean=true;
+        delete(){this.deleted=false};
+    }
+} 
+
+class Cat{
+    // deleted:boolean=true;
+    // delete(){this.deleted=false};
+    constructor(public name:string){}
+}
+
+@deletable
+class Dog{
+    // deleted:boolean=true;
+    // delete(){this.deleted=false};
+    constructor(public name:string){}
+}
+
+const newDog=new Dog('wao')
+console.log((newDog as any).deleted)
+
+const DeletableCat=deletable(Cat);
+
+type DeletableCatInstance=InstanceType<typeof DeletableCat>
+
+class Profile{
+    cat: DeletableCatInstance;
+    constructor(cat:DeletableCatInstance){
+        this.cat=cat;
+    }
+}
+
+const profile =new Profile(new DeletableCat('Ferarry'));
+console.log(profile);
