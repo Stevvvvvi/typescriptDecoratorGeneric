@@ -5,20 +5,19 @@ function CarDecorator( constructor: Function ){
         console.log('running the givemedate function')
         console.log(constructor.prototype.date);
     }
-    // return class extends constructor {
-    //     date=new Date();
-    //     // giveMeDate=()=>{
-    //     //     alert(this.date);
-    //     // }
-    // }
+    constructor.prototype.logo="updated logo"
 }
-// type props={
-//     brand:string;
-// }
-// type state={
-//     [key:string]:any;
-// }
+const OtherDecorator=(name?:string)=>{
+    // constructor.prototype.other="this is from other decorator"
+    return (constructor:Function)=>{
+        name ? constructor.prototype.other="this is the name of "+name
+        : 
+        constructor.prototype.other="the car has no owners";
+    }
 
+}
+
+@OtherDecorator("Mike")
 @CarDecorator
 class Car{
     private brand: string;
@@ -32,7 +31,68 @@ class Car{
 let newCar=new Car('Honda');
 
 console.log((newCar as any).date);
-(newCar as any).giveMeDate();
+(<any>newCar).giveMeDate();
+console.log((newCar as any).other)
+console.log(newCar.logo);
+
+
+// method decorator/////////////////////////////////////////////////////////
+function PrintDecorator(target:Tool, propertyKey:string, descriptor:PropertyDescriptor){
+    target.constructor.prototype.otherTools='bbbbb'
+    // console.log("this is toolName "+target.print);
+    descriptor.writable=true;
+    descriptor.value=function (){
+        console.log("updated print function")
+    }
+    console.log("this is value of print method "+descriptor.value);
+}
+
+class Tool {
+    public toolName:string='tools'
+    @PrintDecorator
+    print( ){
+        console.log('print function')
+    }
+
+}
+
+const newTool=new Tool();
+console.log((newTool as any).otherTools);
+console.log(newTool.print());
+// newTool.print=function(){
+//     console.log("I have changed print method")
+// }
+
+
+//property Decorator////////////////////////////////////////////////////////
+
+function NameDecorator(target:Names, propertyKey:string){
+    target.constructor.prototype.name="MikeUpdated"
+    // console.log("property decorator name "+propertyKey)
+}
+class Names{
+    @NameDecorator
+    public name:string
+    constructor( name:string){
+        this.name=name;
+    }
+}
+
+const newName=new Names("Mike")
+console.log("Property decorator update name test "+newName.name)
+
+
+// parameter decorator //////////////////////////////////////////
+function ParemeterDecorator(target:Object, PropertyKey:string,parameterIndex:number){
+
+}
+
+class Param{
+    constructor(public random:boolean, @ParemeterDecorator public paramName:string){
+        this.paramName=paramName;
+        this.random=random;
+    }
+}
 
 
 
@@ -49,7 +109,20 @@ console.log((newCar as any).date);
 
 
 
-// generic learning
+
+
+
+
+
+
+
+
+
+
+
+
+
+// generic learning///////////////////////////////////////////////////////////
 const makeTurple= <T,Y=any>(a:T,b:Y):[T,Y]=>{
     return [a,b];
 }

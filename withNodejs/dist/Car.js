@@ -24,27 +24,25 @@ function CarDecorator(constructor) {
     constructor.prototype.date = new Date();
     constructor.prototype.giveMeDate = function () {
         console.log('running the givemedate function');
-        alert(constructor.prototype.date);
+        console.log(constructor.prototype.date);
     };
-    // return class extends constructor {
-    //     date=new Date();
-    //     // giveMeDate=()=>{
-    //     //     alert(this.date);
-    //     // }
-    // }
+    constructor.prototype.logo = "updated logo";
 }
-// type props={
-//     brand:string;
-// }
-// type state={
-//     [key:string]:any;
-// }
+var OtherDecorator = function (name) {
+    // constructor.prototype.other="this is from other decorator"
+    return function (constructor) {
+        name ? constructor.prototype.logo = "this is the name of " + name
+            :
+                constructor.prototype.logo = "the car has no owners";
+    };
+};
 var Car = /** @class */ (function () {
     function Car(brand) {
         this.brand = brand;
         this.logo = 'this is a car logo';
     }
     Car = __decorate([
+        OtherDecorator("Mike"),
         CarDecorator,
         __metadata("design:paramtypes", [String])
     ], Car);
@@ -53,6 +51,56 @@ var Car = /** @class */ (function () {
 var newCar = new Car('Honda');
 console.log(newCar.date);
 newCar.giveMeDate();
+console.log(newCar.other);
+console.log(newCar.logo);
+// method decorator
+function PrintDecorator(target, propertyKey, descriptor) {
+    target.constructor.prototype.otherTools = 'bbbbb';
+    // console.log("this is toolName "+target.print);
+    descriptor.writable = true;
+    descriptor.value = function () {
+        console.log("updated print function");
+    };
+    console.log("this is value of print method " + descriptor.value);
+}
+var Tool = /** @class */ (function () {
+    function Tool() {
+        this.toolName = 'tools';
+    }
+    Tool.prototype.print = function () {
+        console.log('print function');
+    };
+    __decorate([
+        PrintDecorator,
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
+        __metadata("design:returntype", void 0)
+    ], Tool.prototype, "print", null);
+    return Tool;
+}());
+var newTool = new Tool();
+console.log(newTool.otherTools);
+console.log(newTool.print());
+// newTool.print=function(){
+//     console.log("I have changed print method")
+// }
+//property Decorator
+function NameDecorator(target, propertyKey) {
+    target.constructor.prototype.name = "MikeUpdated";
+    // console.log("property decorator name "+propertyKey)
+}
+var Names = /** @class */ (function () {
+    function Names(name) {
+        this.name = name;
+    }
+    __decorate([
+        NameDecorator,
+        __metadata("design:type", String)
+    ], Names.prototype, "name", void 0);
+    return Names;
+}());
+var newName = new Names("Mike");
+console.log("Property decorator update name test " + newName.name);
 // generic learning
 var makeTurple = function (a, b) {
     return [a, b];
