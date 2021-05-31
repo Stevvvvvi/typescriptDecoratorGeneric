@@ -264,3 +264,76 @@ class Profile{
 
 const profile =new Profile(new DeletableCat('Ferarry'));
 console.log(profile);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// calculate distance between 2 coordinates
+
+interface Ipoint {
+    lat: number;
+    lng: number;
+  }
+  
+interface Isite {
+    lat: number;
+    lng: number;
+    radius: number;
+    id: string;
+}
+
+function geofence(point: Ipoint, sites: Isite[]): Isite[] {
+    const filtered = sites.filter(({lat,lng,radius})=>{
+        const distance= getDistanceFromLatLonInKm(point.lat,point.lng,lat,lng);
+        if (distance<=radius){
+            return true
+        }
+        return false
+    })
+    return [...filtered];
+}
+
+function getDistanceFromLatLonInKm(lat1:Ipoint['lat'], lon1:Ipoint['lat'], lat2:Ipoint['lat'], lon2:Ipoint['lat']) {
+    var R = 6371000; // Radius of the earth in km
+    var dLat = deg2rad(lat2-lat1);  // deg2rad below
+    var dLon = deg2rad(lon2-lon1); 
+    var a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2)
+      ; 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var d = R * c; // Distance in km
+    return d;
+}
+function deg2rad(deg: number) {
+    return deg * (Math.PI/180)
+}
+
+const Point: Ipoint={
+    lat: -33.836929,  
+    lng :151.207068,
+}
+
+
+const Sites: Isite[]=[
+    { lat:-33.836419,lng: 151.202659, radius: 520, id: '1'},
+    {lat: -33.836943,lng: 151.206801,radius: 100, id: '2'},
+    {lat: -33.875052,lng: 151.210008,radius: 1500 , id: '3'}
+];
+
+console.log(geofence(Point,Sites));
